@@ -10,7 +10,11 @@ module.exports = {
   ],
   important: '#__next',
   theme: {
-    extend: {},
+    extend: {
+      spacing: {
+        '128': '32rem',
+      }
+    }
   },
   plugins: [],
 }

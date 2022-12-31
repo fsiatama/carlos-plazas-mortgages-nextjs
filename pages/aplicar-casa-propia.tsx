@@ -1,75 +1,51 @@
 import {
-  Box,
   Button,
-  Grid,
+  CircularProgress,
   Step,
   StepLabel,
   Stepper,
-  Typography,
 } from "@mui/material";
 import React from "react";
+import StepSuccess from "../components/Steps/StepSuccess";
+import { Form, Formik } from "formik";
+import formInitialValues from "../hooks/Steps/formInitialValues";
+import useStepsForm from "../hooks/Steps/useStepsForm";
+import StepOne from "../components/Steps/StepOne";
+import StepTwo from "../components/Steps/StepTwo";
+import mortgageFormModel from "../hooks/Steps/mortgageFormModel";
+import StepThree from "../components/Steps/StepThree";
 
-const steps = [
-  "Select master blaster campaign settings",
-  "Create an ad group",
-  "Create an ad",
-];
+function _renderStepContent(
+  step: number,
+  formField: typeof mortgageFormModel.formField
+) {
+  switch (step) {
+    case 0:
+      return <StepOne />;
+    case 1:
+      return <StepTwo formField={formField} />;
+    case 2:
+      return <StepThree formField={formField} />;
+    default:
+      return <div>Not Found</div>;
+  }
+}
 
 const Application = () => {
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [completed, setCompleted] = React.useState<{
-    [k: number]: boolean;
-  }>({});
-
-  const totalSteps = () => {
-    return steps.length;
-  };
-
-  const completedSteps = () => {
-    return Object.keys(completed).length;
-  };
-
-  const isLastStep = () => {
-    return activeStep === totalSteps() - 1;
-  };
-
-  const allStepsCompleted = () => {
-    return completedSteps() === totalSteps();
-  };
-
-  const handleNext = () => {
-    const newActiveStep =
-      isLastStep() && !allStepsCompleted()
-        ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          steps.findIndex((step, i) => !(i in completed))
-        : activeStep + 1;
-    setActiveStep(newActiveStep);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleStep = (step: number) => () => {
-    setActiveStep(step);
-  };
-
-  const handleComplete = () => {
-    const newCompleted = completed;
-    newCompleted[activeStep] = true;
-    setCompleted(newCompleted);
-    handleNext();
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-    setCompleted({});
-  };
+  const {
+    activeStep,
+    steps,
+    isLastStep,
+    formField,
+    currentValidationSchema,
+    _handleSubmit,
+    _handleBack,
+    formId,
+  } = useStepsForm();
 
   return (
     <div className="profile-page">
-      <section className="relative block h-96">
+      <section className="relative block h-128">
         <div className="absolute top-0 w-full h-full bg-center bg-cover  bg-[url('../public/images/form-bg.jpg')]">
           <span
             id="blackOverlay"
@@ -90,96 +66,65 @@ const Application = () => {
             y="0"
           >
             <polygon
-              className="text-slate-200 fill-current"
+              className="text-slate-100 fill-current"
               points="2560 0 2560 100 0 100"
             ></polygon>
           </svg>
         </div>
       </section>
-      <section className="relative py-16 bg-slate-200">
+      <section className="relative py-16 bg-slate-100">
         <div className="container mx-auto px-4">
-          <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
-            <div className="px-6">
-              <div className="flex flex-wrap justify-center">
-                <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
-                  <div className="relative">
-                    <img
-                      alt="..."
-                      src="/img/team-2-800x800.jpg"
-                      className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
-                    />
-                  </div>
-                </div>
-                <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
-                  <div className="py-6 px-3 mt-32 sm:mt-0">
-                    <button
-                      className="bg-slate-700 active:bg-slate-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                      type="button"
-                    >
-                      Connect
-                    </button>
-                  </div>
-                </div>
-                <div className="w-full lg:w-4/12 px-4 lg:order-1">
-                  <div className="flex justify-center py-4 lg:pt-4 pt-8">
-                    <div className="mr-4 p-3 text-center">
-                      <span className="text-xl font-bold block uppercase tracking-wide text-slate-600">
-                        22
-                      </span>
-                      <span className="text-sm text-slate-400">Friends</span>
-                    </div>
-                    <div className="mr-4 p-3 text-center">
-                      <span className="text-xl font-bold block uppercase tracking-wide text-slate-600">
-                        10
-                      </span>
-                      <span className="text-sm text-slate-400">Photos</span>
-                    </div>
-                    <div className="lg:mr-4 p-3 text-center">
-                      <span className="text-xl font-bold block uppercase tracking-wide text-slate-600">
-                        89
-                      </span>
-                      <span className="text-sm text-slate-400">Comments</span>
-                    </div>
-                  </div>
-                </div>
+          <div className="relative flex flex-col min-w-0 break-words -mt-48 w-full mb-6 shadow-lg rounded-lg bg-slate-100 border-0">
+            <div className="rounded-t bg-white mb-0 px-6 py-6">
+              <div className="text-center">
+                <Stepper activeStep={activeStep} alternativeLabel>
+                  {steps.map((label: string) => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
               </div>
-              <div className="text-center mt-12">
-                <h3 className="text-4xl font-semibold leading-normal mb-2 text-slate-700 mb-2">
-                  Jenna Stones
-                </h3>
-                <div className="text-sm leading-normal mt-0 mb-2 text-slate-400 font-bold uppercase">
-                  <i className="fas fa-map-marker-alt mr-2 text-lg text-slate-400"></i>{" "}
-                  Los Angeles, California
-                </div>
-                <div className="mb-2 text-slate-600 mt-10">
-                  <i className="fas fa-briefcase mr-2 text-lg text-slate-400"></i>
-                  Solution Manager - Creative Tim Officer
-                </div>
-                <div className="mb-2 text-slate-600">
-                  <i className="fas fa-university mr-2 text-lg text-slate-400"></i>
-                  University of Computer Science
-                </div>
-              </div>
-              <div className="mt-10 py-10 border-t border-slate-200 text-center">
-                <div className="flex flex-wrap justify-center">
-                  <div className="w-full lg:w-9/12 px-4">
-                    <p className="mb-4 text-lg leading-relaxed text-slate-700">
-                      An artist of considerable range, Jenna the name taken by
-                      Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                      performs and records all of his own music, giving it a
-                      warm, intimate feel with a solid groove structure. An
-                      artist of considerable range.
-                    </p>
-                    <a
-                      href="#pablo"
-                      className="font-normal text-lightBlue-500"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      Show more
-                    </a>
-                  </div>
-                </div>
-              </div>
+            </div>
+            <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
+              <React.Fragment>
+                {activeStep === steps.length ? (
+                  <StepSuccess />
+                ) : (
+                  <Formik
+                    initialValues={formInitialValues}
+                    validationSchema={currentValidationSchema}
+                    onSubmit={_handleSubmit}
+                  >
+                    {({ isSubmitting }) => (
+                      <Form id={formId}>
+                        {_renderStepContent(activeStep, formField)}
+
+                        <div className="mb-0 px-6 py-6">
+                          <div className="text-center flex justify-between">
+                            {activeStep !== 0 ? (
+                              <Button onClick={_handleBack}>Back</Button>
+                            ) : (
+                              <div> </div>
+                            )}
+                            <div>
+                              <Button
+                                disabled={isSubmitting}
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                              >
+                                {isLastStep ? "Place order" : "Next"}
+                              </Button>
+                              {isSubmitting && <CircularProgress size={24} />}
+                            </div>
+                          </div>
+                        </div>
+                      </Form>
+                    )}
+                  </Formik>
+                )}
+              </React.Fragment>
             </div>
           </div>
         </div>

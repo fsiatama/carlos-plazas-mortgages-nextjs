@@ -17,11 +17,11 @@ export default function Home() {
         justifyContent="center"
       >
         <Grid item xs md={6}>
-          <div className="flex h-screen items-center backdrop-blur-sm bg-sky-700/80">
+          <div className="flex h-screen min-h-fit items-center backdrop-blur-sm bg-sky-700/80">
             <div className="container relative mx-auto">
               <div className="items-center flex flex-wrap">
                 <div className="w-full ml-auto mr-auto text-center">
-                  <div className="p-24">
+                  <div className="px-4 md:px-8 lg:px-24 pt-12">
                     <div className="flex flex-col w-full justify-center items-start text-center md:text-left">
                       <p
                         className={`${inter.className} text-gray-200 uppercase tracking-loose w-full`}
@@ -42,7 +42,7 @@ export default function Home() {
                         </p>
                       </blockquote>
                       <Link href="/aplicar-casa-propia" passHref legacyBehavior>
-                        <button className="cursor-pointer mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                        <button className="cursor-pointer mx-auto lg:mx-0 bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
                           Aplicar
                         </button>
                       </Link>

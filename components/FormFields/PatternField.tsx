@@ -22,6 +22,9 @@ const PatternField: React.FC<
       helperText={
         helperText ?? (isTouched && errorMessage ? errorMessage : undefined)
       }
+      inputProps={{
+        className: "bg-white",
+      }}
       {...rest}
       {...field}
     />

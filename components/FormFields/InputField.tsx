@@ -14,6 +14,9 @@ const InputField: React.FC<FieldProps & TextFieldProps> = (props) => {
       helperText={
         helperText ?? (isTouched && errorMessage ? errorMessage : undefined)
       }
+      InputProps={{
+        className: "bg-white",
+      }}
       {...rest}
       {...field}
     />

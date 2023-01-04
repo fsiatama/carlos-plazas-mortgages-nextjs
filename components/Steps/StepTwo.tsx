@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Stack } from "@mui/material";
+import { Autocomplete, Grid, Stack, TextField } from "@mui/material";
 import { Field } from "formik";
 import mortgageFormModel from "../../hooks/Steps/mortgageFormModel";
 import InputField from "../FormFields/InputField";
@@ -7,6 +7,8 @@ import SwitchField from "../FormFields/SwitchField";
 import PatternField from "../FormFields/PatternField";
 import SelectField from "../FormFields/SelectField";
 import statesData from "../../hooks/Steps/States.json";
+import NumberField from "../FormFields/NumberField";
+import useStepTwoForm from "../../hooks/Steps/useStepTwoForm";
 
 type Props = {
   formField: typeof mortgageFormModel.formField;
@@ -26,11 +28,13 @@ const StepTwo = ({ formField }: Props) => {
     idNumber,
   } = formField;
 
+  const { _handleState, _handleInputState, inputStateValue } = useStepTwoForm();
+
   return (
     <React.Fragment>
       <div className="">
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-          <h6 className="text-slate-400 text-sm mt-3 mb-6 font-bold uppercase">
+          <h6 className="text-slate-400 text-sm my-6 font-bold uppercase">
             Tu información personal
           </h6>
           <Grid container spacing={3}>
@@ -59,7 +63,12 @@ const StepTwo = ({ formField }: Props) => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Stack direction="row" spacing={1} alignItems="center">
+              <Stack
+                direction="row"
+                alignItems="flex-start"
+                spacing={2}
+                justifyContent="center"
+              >
                 <SwitchField name={idType.name} />
                 <Field
                   format="###-##-####"
@@ -96,12 +105,25 @@ const StepTwo = ({ formField }: Props) => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Field
-                name={state.name}
-                label={state.label}
-                fullWidth
-                data={statesData}
-                component={SelectField}
+              <Autocomplete
+                disablePortal
+                options={statesData}
+                getOptionLabel={(option) => option.label}
+                onChange={_handleState}
+                onInputChange={_handleInputState}
+                inputValue={inputStateValue}
+                renderInput={(params) => (
+                  <Field
+                    {...params}
+                    name={state.name}
+                    label={state.label}
+                    fullWidth
+                    inputProps={{
+                      ...params.inputProps,
+                    }}
+                    component={InputField}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -109,7 +131,7 @@ const StepTwo = ({ formField }: Props) => {
                 name={zipcode.name}
                 label={zipcode.label}
                 fullWidth
-                component={InputField}
+                component={NumberField}
               />
             </Grid>
           </Grid>

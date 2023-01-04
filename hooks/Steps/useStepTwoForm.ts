@@ -5,6 +5,7 @@ import { useState } from "react";
 
 const useStepTwoForm = () => {
   const [toggled, setToggle] = useState<boolean>(true);
+  const [inputStateValue, setInputStateValue] = useState<string>("");
   const {
     setFieldValue,
     values: { idType },
@@ -20,6 +21,8 @@ const useStepTwoForm = () => {
     setToggle(newIdType);
   };
 
+  // (event: SyntheticEvent<Element, Event>, value: { label: string; value: string; } | null, reason: AutocompleteChangeReason, details?: AutocompleteChangeDetails<...> | undefined) => void
+
   const _handleState = (
     event: React.SyntheticEvent<Element, Event>,
     newState: SelectItem | null
@@ -27,8 +30,17 @@ const useStepTwoForm = () => {
     setFieldValue("state", newState?.value);
   };
 
+  const _handleInputState = (
+    event: React.SyntheticEvent<Element, Event>,
+    newInputValue: string
+  ) => {
+    setInputStateValue(newInputValue);
+  };
+
   return {
     toggled,
+    inputStateValue,
+    _handleInputState,
     _handleState,
     _handleIdType,
   };

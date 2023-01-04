@@ -2,6 +2,7 @@ import React from "react";
 import { FieldProps, getIn } from "formik";
 import {
   Autocomplete,
+  AutocompleteProps,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -9,23 +10,37 @@ import {
   Select,
   TextField,
   TextFieldProps,
+  UseAutocompleteProps,
 } from "@mui/material";
 import { SelectItem } from "../../hooks/Steps/mortgageFormModel";
-import useStepTwoForm from "../../hooks/Steps/useStepTwoForm";
 
 const SelectField: React.FC<FieldProps & TextFieldProps & SelectItem[]> = (
   props
 ) => {
-  const { _handleState } = useStepTwoForm();
   const isTouched = getIn(props.form.touched, props.field.name);
   const errorMessage = getIn(props.form.errors, props.field.name);
-  const { error, helperText, field, form, label, data, ...rest } = props;
+  const {
+    error,
+    helperText,
+    field,
+    form,
+    label,
+    value,
+    onInputChange,
+    inputValue,
+    data,
+    onChange,
+    ...rest
+  } = props;
 
   return (
     <Autocomplete
       disablePortal
+      value={value}
       options={data}
-      onChange={_handleState}
+      onChange={onChange}
+      onInputChange={onInputChange}
+      inputValue={inputValue}
       renderInput={(params) => (
         <TextField
           {...params}

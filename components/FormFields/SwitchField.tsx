@@ -6,7 +6,8 @@ import useStepTwoForm from "../../hooks/Steps/useStepTwoForm";
 const MaterialUISwitch = styled(Switch)(() => ({
   width: 96,
   height: 48,
-  padding: 8,
+  padding: 4,
+  marginTop: 4,
   "& .MuiSwitch-switchBase": {
     padding: 11,
     color: "#ff6a00",

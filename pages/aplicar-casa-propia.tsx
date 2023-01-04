@@ -14,6 +14,7 @@ import StepOne from "../components/Steps/StepOne";
 import StepTwo from "../components/Steps/StepTwo";
 import mortgageFormModel from "../hooks/Steps/mortgageFormModel";
 import StepThree from "../components/Steps/StepThree";
+import StepFour from "../components/Steps/StepFour";
 
 function _renderStepContent(
   step: number,
@@ -26,6 +27,8 @@ function _renderStepContent(
       return <StepTwo formField={formField} />;
     case 2:
       return <StepThree formField={formField} />;
+    case 3:
+      return <StepFour formField={formField} />;
     default:
       return <div>Not Found</div>;
   }
@@ -103,7 +106,9 @@ const Application = () => {
                         <div className="mb-0 px-6 py-6">
                           <div className="text-center flex justify-between">
                             {activeStep !== 0 ? (
-                              <Button onClick={_handleBack}>Back</Button>
+                              <Button size="large" onClick={_handleBack}>
+                                Back
+                              </Button>
                             ) : (
                               <div> </div>
                             )}
@@ -113,8 +118,9 @@ const Application = () => {
                                 type="submit"
                                 variant="contained"
                                 color="primary"
+                                size="large"
                               >
-                                {isLastStep ? "Place order" : "Next"}
+                                {isLastStep ? "Send" : "Next"}
                               </Button>
                               {isSubmitting && <CircularProgress size={24} />}
                             </div>

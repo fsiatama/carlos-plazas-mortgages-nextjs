@@ -1,5 +1,11 @@
 import * as Yup from "yup";
 import mortgageFormModel from "./mortgageFormModel";
+import statesData from "./States.json";
+
+const states = statesData.reduce((accum: string[], state) => {
+  return [...accum, state.value];
+}, []);
+
 const {
   formField: {
     creditType,
@@ -10,8 +16,8 @@ const {
     zipcode,
     companyName,
     idNumber,
-    idType,
     income,
+    email,
     phoneNumber,
     phoneNumberVC,
     seniorityMonth,
@@ -20,6 +26,7 @@ const {
 } = mortgageFormModel;
 
 const ssnRegex = /^(?!666|000|9\d{2})\d{3}-(?!00)\d{2}-(?!0{4})\d{4}$/;
+const phoneNumberRegex = /(?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})/g;
 
 export default [
   Yup.object().shape({
@@ -35,7 +42,9 @@ export default [
     [idNumber.name]: Yup.string()
       .required(`${idNumber.requiredErrorMsg}`)
       .matches(ssnRegex, idNumber.invalidErrorMsg),
-    [state.name]: Yup.string().nullable().required(`${state.requiredErrorMsg}`),
+    [state.name]: Yup.string()
+      .required(`${state.requiredErrorMsg}`)
+      .oneOf(states, state.invalidErrorMsg),
     [zipcode.name]: Yup.string()
       .required(`${zipcode.requiredErrorMsg}`)
       .test("len", `${zipcode.invalidErrorMsg}`, (val) =>
@@ -43,11 +52,12 @@ export default [
       ),
   }),
   Yup.object().shape({
+    [email.name]: Yup.string()
+      .email(email.invalidErrorMsg)
+      .required(`${email.requiredErrorMsg}`),
     [phoneNumber.name]: Yup.string()
       .required(`${phoneNumber.requiredErrorMsg}`)
-      .test("len", `${phoneNumber.invalidErrorMsg}`, (val) =>
-        val && val.length === 10 ? true : false
-      ),
+      .matches(phoneNumberRegex, phoneNumber.invalidErrorMsg),
 
     [phoneNumberVC.name]: Yup.string()
       .required(`${phoneNumber.requiredErrorMsg}`)

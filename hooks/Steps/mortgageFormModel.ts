@@ -10,7 +10,7 @@ export enum IdTypes {
 }
 
 export type SelectItem = {
-  name: string;
+  label: string;
   value: string | number;
 };
 
@@ -87,14 +87,21 @@ export default {
     },
     state: {
       name: "state",
-      label: "State/Province/Region",
+      label: "State/Province/Region*",
       requiredErrorMsg: "State/Province/Region is required",
+      invalidErrorMsg: "State/Province/Region is not valid",
     },
     zipcode: {
       name: "zipcode",
       label: "Zipcode*",
       requiredErrorMsg: "Zipcode is required",
       invalidErrorMsg: "Zipcode is not valid (e.g. 70000)",
+    },
+    email: {
+      name: "email",
+      label: "Email*",
+      requiredErrorMsg: "Email is required",
+      invalidErrorMsg: "Email is not valid (e.g. youremail@domain.com)",
     },
     phoneNumber: {
       name: "phoneNumber",
@@ -120,8 +127,8 @@ export default {
     },
     income: {
       name: "income",
-      label: "Ingreso promedio mensual (demostrable)*",
-      requiredErrorMsg: "Ingreso promedio is required",
+      label: "Average monthly income (demonstrable)*",
+      requiredErrorMsg: "Average monthly income is required",
     },
   },
 };

@@ -1,32 +1,29 @@
+import { useEffect, useState } from "react";
 import { useFormikContext } from "formik";
 
 import { SelectItem, Values } from "./mortgageFormModel";
-import { useState } from "react";
+import statesData from "./States.json";
 
 const useStepTwoForm = () => {
-  const [toggled, setToggle] = useState<boolean>(true);
+  const [stateValue, setStateValue] = useState<SelectItem | null>();
   const [inputStateValue, setInputStateValue] = useState<string>("");
   const {
     setFieldValue,
-    values: { idType },
+    values: { state },
   } = useFormikContext<Values>();
 
-  const _handleIdType = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    newIdType: boolean
-  ) => {
-    const idTypeVal = newIdType ? "SSN" : "ITIN";
-
-    setFieldValue("idType", idTypeVal);
-    setToggle(newIdType);
-  };
-
-  // (event: SyntheticEvent<Element, Event>, value: { label: string; value: string; } | null, reason: AutocompleteChangeReason, details?: AutocompleteChangeDetails<...> | undefined) => void
+  useEffect(() => {
+    if (state) {
+      const selectState = statesData.find((a) => a.value === state);
+      setStateValue(selectState);
+    }
+  }, []);
 
   const _handleState = (
     event: React.SyntheticEvent<Element, Event>,
     newState: SelectItem | null
   ) => {
+    setStateValue(newState);
     setFieldValue("state", newState?.value);
   };
 
@@ -38,11 +35,11 @@ const useStepTwoForm = () => {
   };
 
   return {
-    toggled,
+    stateValue,
     inputStateValue,
+    statesData,
     _handleInputState,
     _handleState,
-    _handleIdType,
   };
 };
 

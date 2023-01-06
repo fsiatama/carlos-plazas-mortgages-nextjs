@@ -34,6 +34,9 @@ const StepFour = ({ formField }: Props) => {
                 label={seniorityMonth.label}
                 fullWidth
                 component={NumberField}
+                inputProps={{
+                  allowedDecimalSeparators: true,
+                }}
               />
             </Grid>
             <Grid xs={12} sm={6}>

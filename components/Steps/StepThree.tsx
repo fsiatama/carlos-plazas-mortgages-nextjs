@@ -1,13 +1,16 @@
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Stack } from "@mui/material";
+import { FormHelperText, Stack } from "@mui/material";
 import { Field } from "formik";
+import LoadingButton from "@mui/lab/LoadingButton";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import SendIcon from "@mui/icons-material/Send";
+
 import mortgageFormModel from "../../hooks/Steps/mortgageFormModel";
 import PatternField from "../FormFields/PatternField";
 import NumberField from "../FormFields/NumberField";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import LoadingButton from "@mui/lab/LoadingButton";
 import InputField from "../FormFields/InputField";
+import useStepThreeForm from "../../hooks/Steps/useStepThreeForm";
 
 type Props = {
   formField: typeof mortgageFormModel.formField;
@@ -15,6 +18,14 @@ type Props = {
 
 const StepThree = ({ formField }: Props) => {
   const { phoneNumber, phoneNumberVC, email } = formField;
+  const {
+    loading,
+    sendCode,
+    helperText,
+    helperTextError,
+    _handleSendSMS,
+    _handleSendVerify,
+  } = useStepThreeForm();
 
   return (
     <React.Fragment>
@@ -36,7 +47,7 @@ const StepThree = ({ formField }: Props) => {
               <Stack
                 direction="row"
                 alignItems="flex-start"
-                spacing={2}
+                spacing={1}
                 justifyContent="center"
               >
                 <Field
@@ -44,13 +55,46 @@ const StepThree = ({ formField }: Props) => {
                   name={phoneNumber.name}
                   label={phoneNumber.label}
                   fullWidth
+                  disabled={sendCode}
                   component={PatternField}
                 />
                 <LoadingButton
                   variant="outlined"
                   className="h-14"
                   size="large"
-                  loading={false}
+                  disabled={sendCode}
+                  loading={loading}
+                  onClick={_handleSendSMS}
+                  color="primary"
+                  endIcon={<SendIcon />}
+                ></LoadingButton>
+              </Stack>
+            </Grid>
+            <Grid xs={12} sm={6} mdOffset={3}>
+              <Stack
+                direction="row"
+                alignItems="flex-start"
+                spacing={1}
+                justifyContent="center"
+              >
+                <Field
+                  name={phoneNumberVC.name}
+                  label={phoneNumberVC.label}
+                  fullWidth
+                  disabled={!sendCode}
+                  component={NumberField}
+                  inputProps={{
+                    allowLeadingZeros: true,
+                  }}
+                />
+                <LoadingButton
+                  variant="outlined"
+                  className="h-14"
+                  size="large"
+                  fullWidth
+                  loading={loading}
+                  disabled={!sendCode}
+                  onClick={_handleSendVerify}
                   color="success"
                   endIcon={<CheckCircleOutlineIcon />}
                 >
@@ -59,12 +103,9 @@ const StepThree = ({ formField }: Props) => {
               </Stack>
             </Grid>
             <Grid xs={12} sm={6} mdOffset={3}>
-              <Field
-                name={phoneNumberVC.name}
-                label={phoneNumberVC.label}
-                fullWidth
-                component={NumberField}
-              />
+              <FormHelperText error={helperTextError}>
+                {helperText}
+              </FormHelperText>
             </Grid>
           </Grid>
         </div>

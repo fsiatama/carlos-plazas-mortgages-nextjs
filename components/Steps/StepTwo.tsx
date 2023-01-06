@@ -1,12 +1,10 @@
 import React from "react";
-import { Autocomplete, Grid, Stack, TextField } from "@mui/material";
+import { Autocomplete, Grid, Stack } from "@mui/material";
 import { Field } from "formik";
 import mortgageFormModel from "../../hooks/Steps/mortgageFormModel";
 import InputField from "../FormFields/InputField";
 import SwitchField from "../FormFields/SwitchField";
 import PatternField from "../FormFields/PatternField";
-import SelectField from "../FormFields/SelectField";
-import statesData from "../../hooks/Steps/States.json";
 import NumberField from "../FormFields/NumberField";
 import useStepTwoForm from "../../hooks/Steps/useStepTwoForm";
 
@@ -28,7 +26,13 @@ const StepTwo = ({ formField }: Props) => {
     idNumber,
   } = formField;
 
-  const { _handleState, _handleInputState, inputStateValue } = useStepTwoForm();
+  const {
+    _handleState,
+    _handleInputState,
+    inputStateValue,
+    stateValue,
+    statesData,
+  } = useStepTwoForm();
 
   return (
     <React.Fragment>
@@ -107,6 +111,7 @@ const StepTwo = ({ formField }: Props) => {
             <Grid item xs={12} sm={6}>
               <Autocomplete
                 disablePortal
+                value={stateValue ?? null}
                 options={statesData}
                 getOptionLabel={(option) => option.label}
                 onChange={_handleState}

@@ -26,9 +26,9 @@ function _renderStepContent(
     case 1:
       return <StepTwo formField={formField} />;
     case 2:
-      return <StepThree formField={formField} />;
-    case 3:
       return <StepFour formField={formField} />;
+    case 3:
+      return <StepThree formField={formField} />;
     default:
       return <div>Not Found</div>;
   }

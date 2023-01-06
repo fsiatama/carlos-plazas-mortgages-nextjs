@@ -11,17 +11,25 @@ interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
   name: string;
   prefix: string;
-  allowedDecimalSeparators: boolean;
+  allowedDecimalSeparators?: boolean;
+  allowLeadingZeros?: boolean;
 }
 const NumberFormatCustom = React.forwardRef<NumericFormatProps, CustomProps>(
   (props, ref) => {
-    const { onChange, prefix, allowedDecimalSeparators, ...other } = props;
+    const {
+      onChange,
+      prefix,
+      allowedDecimalSeparators,
+      allowLeadingZeros,
+      ...other
+    } = props;
 
     return (
       <NumericFormat
         {...other}
         getInputRef={ref}
         prefix={prefix}
+        allowLeadingZeros={allowLeadingZeros ? true : false}
         thousandsGroupStyle={allowedDecimalSeparators ? "lakh" : "none"}
         onValueChange={(values) => {
           onChange({

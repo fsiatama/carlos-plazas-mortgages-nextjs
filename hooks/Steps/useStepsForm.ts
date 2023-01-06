@@ -9,8 +9,8 @@ const { formId, formField } = mortgageFormModel;
 const steps = [
   "Tipo de crédito",
   "Información personal",
-  "Datos de contacto",
   "Información laboral",
+  "Datos de contacto",
 ];
 
 const useStepsForm = () => {

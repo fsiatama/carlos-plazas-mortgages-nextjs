@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import React from "react";
 
 type StepSuccessProps = {
@@ -5,7 +6,16 @@ type StepSuccessProps = {
 };
 
 const StepSuccess: React.FC<StepSuccessProps> = ({ activeStep }) => {
-  return <></>;
+  return (
+    <>
+      <Typography variant="h5" gutterBottom>
+        Gracias, hemos recibido tu información.
+      </Typography>
+      <Typography variant="subtitle1">
+        Pronto nos pondremos en contacto contigo
+      </Typography>
+    </>
+  );
 };
 
 export default StepSuccess;

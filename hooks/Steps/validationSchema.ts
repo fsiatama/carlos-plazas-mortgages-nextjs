@@ -39,9 +39,8 @@ export default [
     [lastName.name]: Yup.string().required(`${lastName.requiredErrorMsg}`),
     [address1.name]: Yup.string().required(`${address1.requiredErrorMsg}`),
     [city.name]: Yup.string().required(`${city.requiredErrorMsg}`),
-    [idNumber.name]: Yup.string()
-      .required(`${idNumber.requiredErrorMsg}`)
-      .matches(ssnRegex, idNumber.invalidErrorMsg),
+    [idNumber.name]: Yup.string().required(`${idNumber.requiredErrorMsg}`),
+    //.matches(ssnRegex, idNumber.invalidErrorMsg),
     [state.name]: Yup.string()
       .required(`${state.requiredErrorMsg}`)
       .oneOf(states, state.invalidErrorMsg),
@@ -50,6 +49,18 @@ export default [
       .test("len", `${zipcode.invalidErrorMsg}`, (val) =>
         val && val.length === 5 ? true : false
       ),
+  }),
+  Yup.object().shape({
+    [companyName.name]: Yup.string().required(
+      `${companyName.requiredErrorMsg}`
+    ),
+    [seniorityMonth.name]: Yup.number()
+      .min(2)
+      .required(`${seniorityMonth.requiredErrorMsg}`),
+
+    [income.name]: Yup.number()
+      .min(1000)
+      .required(`${income.requiredErrorMsg}`),
   }),
   Yup.object().shape({
     [email.name]: Yup.string()
@@ -64,15 +75,5 @@ export default [
       .test("len", `${phoneNumber.invalidErrorMsg}`, (val) =>
         val && val.length === 6 ? true : false
       ),
-  }),
-  Yup.object().shape({
-    [companyName.name]: Yup.string().required(
-      `${companyName.requiredErrorMsg}`
-    ),
-    [seniorityMonth.name]: Yup.string().required(
-      `${seniorityMonth.requiredErrorMsg}`
-    ),
-
-    [income.name]: Yup.string().required(`${income.requiredErrorMsg}`),
   }),
 ];
